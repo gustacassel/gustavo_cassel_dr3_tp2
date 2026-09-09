@@ -1,4 +1,4 @@
-# TP2 — Do Docker ao Kubernetes
+# TP2 - Do Docker ao Kubernetes
 
 **Aluno:** Gustavo Cassel
 **Disciplina:** Microsserviços e DevOps com Spring Boot e Spring Cloud
@@ -104,7 +104,7 @@ kind delete cluster --name tp2
 ---
 
 **Nota sobre `localhost` em requisições:** dentro dos containers/Pods, o
-`order-service` nunca usa `localhost` para falar com o `product-service` — ele
+`order-service` nunca usa `localhost` para falar com o `product-service` - ele
 usa o nome do container (Docker) ou o nome do Service (Kubernetes), via a
 variável de ambiente `PRODUCT_SERVICE_URL`. O `localhost` só aparece nos
 comandos `curl` acima porque estes são executados do **host** (sua máquina),
