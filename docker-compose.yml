@@ -1,0 +1,70 @@
+# ===========================================================================
+# TP2 — Do Docker ao Kubernetes
+#
+# Sobe os dois microsservicos ja conectados na rede dedicada "tp2-network"
+# (secoes 8 e 9 do enunciado). O order-service so inicia depois que o
+# product-service esta "healthy", evitando a corrida classica de um
+# servico chamar o outro antes dele estar pronto.
+#
+# Uso:
+#   docker compose up -d --build
+#   docker compose ps
+#   docker compose logs -f
+# ===========================================================================
+
+name: tp2-docker-kubernetes
+
+services:
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    image: tp2/product-service:1.0.0
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    networks:
+      - tp2-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8081/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: tp2/order-service:1.0.0
+    container_name: order-service
+    environment:
+      # Nome do CONTAINER do product-service dentro da rede "tp2-network".
+      # O Docker resolve esse nome via DNS interno — e por isso a
+      # comunicacao entre os dois nunca usa localhost (secao 7).
+      PRODUCT_SERVICE_URL: http://product-service:8081
+    ports:
+      - "8082:8082"
+    depends_on:
+      product-service:
+        condition: service_healthy
+    networks:
+      - tp2-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+# ===========================================================================
+# Rede dedicada (secao 8): os dois containers se encontram pelo NOME DO
+# SERVICO, nao por IP fixo nem por localhost.
+# ===========================================================================
+networks:
+  tp2-network:
+    name: tp2-network
+    driver: bridge

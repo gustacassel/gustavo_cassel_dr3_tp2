@@ -1,0 +1,59 @@
+# ===========================================================================
+# product-service — Deployment (secao 11) + Service (secao 11 e 13)
+#
+# replicas: 3 ja atende a secao 13 (descoberta de servico e balanceamento):
+# o Deployment garante que sempre existam 3 Pods no ar, e o Service abaixo
+# distribui as requisicoes entre eles.
+# ===========================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: tp2-loja
+  labels:
+    app: product-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+        - name: product-service
+          image: tp2/product-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 15
+---
+# O Service e o nome fixo pelo qual o product-service e encontrado.
+# Nao importa qual dos 3 Pods responde, nem se um deles for substituido —
+# quem chama so precisa saber o nome "product-service".
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: tp2-loja
+spec:
+  type: NodePort
+  selector:
+    app: product-service
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 30081

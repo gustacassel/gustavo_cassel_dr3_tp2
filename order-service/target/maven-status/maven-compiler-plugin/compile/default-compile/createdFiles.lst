@@ -1,0 +1,7 @@
+br\edu\tp2\orderservice\client\ProductClient.class
+br\edu\tp2\orderservice\repository\OrderRepository.class
+br\edu\tp2\orderservice\client\ProductDTO.class
+br\edu\tp2\orderservice\controller\OrderController.class
+br\edu\tp2\orderservice\config\RestTemplateConfig.class
+br\edu\tp2\orderservice\model\Order.class
+br\edu\tp2\orderservice\OrderServiceApplication.class

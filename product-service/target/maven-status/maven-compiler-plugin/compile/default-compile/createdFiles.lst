@@ -1,0 +1,4 @@
+br\edu\tp2\productservice\repository\ProductRepository.class
+br\edu\tp2\productservice\model\Product.class
+br\edu\tp2\productservice\ProductServiceApplication.class
+br\edu\tp2\productservice\controller\ProductController.class

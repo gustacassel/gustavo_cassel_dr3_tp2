@@ -1,0 +1,6 @@
+# Pasta logica (Namespace) onde todos os recursos deste trabalho vao morar.
+# Precisa ser aplicado antes de qualquer outro arquivo desta pasta.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tp2-loja

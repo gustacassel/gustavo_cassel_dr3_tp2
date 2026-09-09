@@ -1,0 +1,20 @@
+# ===========================================================================
+# Configuracao do cluster local (kind). Mapeia as portas NodePort dos
+# Services (30081, 30082) para as mesmas portas na maquina do host
+# (8081, 8082), para que "kubectl apply" seja suficiente e nao seja
+# preciso usar "kubectl port-forward" so para testar.
+#
+# Uso:
+#   kind create cluster --name tp2 --config kind-config.yaml
+# ===========================================================================
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30081
+        hostPort: 8081
+        protocol: TCP
+      - containerPort: 30082
+        hostPort: 8082
+        protocol: TCP
