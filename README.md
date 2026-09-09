@@ -4,11 +4,6 @@
 **Disciplina:** Microsserviços e DevOps com Spring Boot e Spring Cloud
 **Tema escolhido:** Loja virtual
 
-> A resposta completa do trabalho (as 14 seções do enunciado, tabelas,
-> explicações e evidências) está no arquivo
-> [`gustavo_cassel_DR3_TP2.docx`](gustavo_cassel_DR3_TP2.docx). Este README é
-> só um guia rápido do projeto e de como rodá-lo.
-
 ---
 
 ## O projeto
